@@ -1,9 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-// Cole aqui as configurações que você copiou do Firebase Console
 const firebaseConfig = {
   apiKey: "AIzaSyC3aUD9xgtPVPLI_Iulp7S-RtVJ2qsTeeU",
   authDomain: "loja-online-733d2.firebaseapp.com",
@@ -14,33 +13,12 @@ const firebaseConfig = {
   measurementId: "G-JK22HK669B"
 };
 
-// Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
-
-// Exporte os serviços que você vai usar
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-// Funções úteis para o Firestore
-export async function addDocument(collectionName, data) {
-  const { collection, addDoc } = await import('firebase/firestore');
-  try {
-    const docRef = await addDoc(collection(db, collectionName), data);
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding document: ", error);
-    return null;
-  }
-}
-
-export async function updateDocument(collectionName, docId, data) {
-  const { doc, updateDoc } = await import('firebase/firestore');
-  try {
-    await updateDoc(doc(db, collectionName, docId), data);
-    return true;
-  } catch (error) {
-    console.error("Error updating document: ", error);
-    return false;
-  }
-}
+// Helper para imagens
+export const getFirebaseImageUrl = (path) => {
+  return `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${encodeURIComponent(path)}?alt=media`;
+};
